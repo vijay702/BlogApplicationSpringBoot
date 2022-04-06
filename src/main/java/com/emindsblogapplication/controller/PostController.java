@@ -1,8 +1,13 @@
 package com.emindsblogapplication.controller;
 
+import java.util.List;
+
+import com.emindsblogapplication.exception.PostNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,5 +30,18 @@ public class PostController {
 		
 		return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
 	}
+	
+	@GetMapping
+	public List<PostDto> getAllPosts(){
+		
+		return postService.getAllPosts();
+	}
+
+	@GetMapping("/{id}")
+	public PostDto getPostById(@PathVariable ("id") Long Id) throws PostNotFoundException {
+		
+		return postService.getPostById( Id);
+	}
+
 
 }
