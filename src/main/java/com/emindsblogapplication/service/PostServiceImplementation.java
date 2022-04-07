@@ -6,6 +6,9 @@ import java.util.stream.Collectors;
 
 import com.emindsblogapplication.exception.PostNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.emindsblogapplication.dto.PostDto;
@@ -19,6 +22,25 @@ public class PostServiceImplementation implements PostService {
 
 	@Autowired
 	private PostRepository postRepository;
+
+	@Override
+	public void deletePostById(Long id) throws PostNotFoundException {
+
+
+		Optional<Post> post = postRepository.findById(id);
+
+		if(!post.isPresent()) {
+
+			throw  new PostNotFoundException("enter a correct id , there is no post for entered id");
+
+		}
+
+		Post newPost = post.get();
+
+		postRepository.delete(newPost);
+
+
+	}
 
 	@Override
 	public PostDto createPost(PostDto postDto) {
@@ -36,11 +58,18 @@ public class PostServiceImplementation implements PostService {
 	}
 
 	@Override
-	public List<PostDto> getAllPosts() {
+	public List<PostDto> getAllPosts(int pageNO , int pageSize) {
+       //create a pagebable instance
 
-		
-		List<Post> posts = postRepository.findAll();
-		return posts.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
+		Pageable pageable = PageRequest.of(pageNO,pageSize);
+
+		Page<Post> posts = postRepository.findAll(pageable);
+
+		//get content from page objcet
+
+		List<Post> listOfPosts =posts.getContent();
+
+		return listOfPosts.stream().map(post -> mapToDto(post)).collect(Collectors.toList());
 	
 	}
 	
@@ -58,6 +87,22 @@ public class PostServiceImplementation implements PostService {
 		Post newPost = post.get();
 		
 		return mapToDto(newPost);
+	}
+
+	@Override
+	public PostDto updatePost(PostDto postDto, Long id)  {
+		// get post by id
+		Post post = postRepository.findById(id).get();
+
+
+		
+
+		post.setTitle(postDto.getTitle());
+		post.setDescrption(postDto.getDescrption());
+		post.setContent(postDto.getDescrption());
+		Post updatePost = postRepository.save(post);
+
+		return mapToDto(updatePost);
 	}
 
 	//converting dto to entity

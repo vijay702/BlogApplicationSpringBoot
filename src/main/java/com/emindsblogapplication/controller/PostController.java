@@ -6,12 +6,7 @@ import com.emindsblogapplication.exception.PostNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.emindsblogapplication.dto.PostDto;
 import com.emindsblogapplication.service.PostService;
@@ -32,16 +27,37 @@ public class PostController {
 	}
 	
 	@GetMapping
-	public List<PostDto> getAllPosts(){
+	public List<PostDto> getAllPosts(
+			@RequestParam(value="pageNo", defaultValue = "0",required = false)int pageNo,
+			@RequestParam(value = "pageSize" , defaultValue = "10" ,required = false) int pageSize){
 		
-		return postService.getAllPosts();
+		return postService.getAllPosts(pageNo,pageSize);
 	}
 
 	@GetMapping("/{id}")
-	public PostDto getPostById(@PathVariable ("id") Long Id) throws PostNotFoundException {
+	public PostDto getPostById(@PathVariable ("id") Long id) throws PostNotFoundException {
 		
-		return postService.getPostById( Id);
+		return postService.getPostById( id);
 	}
+    @PutMapping("/{id}")
+	public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto, @PathVariable (name ="id") Long id )  {
+
+		PostDto postResponse = postService.updatePost(postDto,id);
+
+		return new ResponseEntity<>(postResponse,HttpStatus.OK);
+
+	}
+	@DeleteMapping("{id}")
+	public String deletePostById(@PathVariable("id") Long id) throws PostNotFoundException {
+
+
+		postService.deletePostById(id);
+		return "student deleted sucessfully";
+
+	}
+
+
+
 
 
 }
