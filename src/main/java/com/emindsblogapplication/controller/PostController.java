@@ -2,6 +2,8 @@ package com.emindsblogapplication.controller;
 
 import java.util.List;
 
+import com.emindsblogapplication.entity.PostResponse;
+import com.emindsblogapplication.exception.DataAlreadyExistsException;
 import com.emindsblogapplication.exception.PostNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,7 +21,7 @@ public class PostController {
 	private PostService postService ;
 	
 	@PostMapping
-	public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto){
+	public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto) throws DataAlreadyExistsException {
 		
 		
 		
@@ -27,9 +29,9 @@ public class PostController {
 	}
 	
 	@GetMapping
-	public List<PostDto> getAllPosts(
-			@RequestParam(value="pageNo", defaultValue = "0",required = false)int pageNo,
-			@RequestParam(value = "pageSize" , defaultValue = "10" ,required = false) int pageSize){
+	public PostResponse getAllPosts(
+			@RequestParam(value="pageNo", defaultValue = "0",required = false) Integer pageNo,
+			@RequestParam(value = "pageSize" , defaultValue = "10" ,required = false) Integer pageSize){
 		
 		return postService.getAllPosts(pageNo,pageSize);
 	}
@@ -52,7 +54,7 @@ public class PostController {
 
 
 		postService.deletePostById(id);
-		return "student deleted sucessfully";
+		return "post deleted sucessfully";
 
 	}
 

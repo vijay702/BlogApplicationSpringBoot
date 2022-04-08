@@ -25,4 +25,14 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     }
 
+
+    @ExceptionHandler(DataAlreadyExistsException.class)
+    public ResponseEntity<ErrorMessage> dataAlreadyExistException(DataAlreadyExistsException alreadyExistsException,
+                                                                   WebRequest webRequest){
+
+        ErrorMessage errorMessage = new ErrorMessage(HttpStatus.CONFLICT,alreadyExistsException.getMessage());
+
+        return   ResponseEntity.status(HttpStatus.CONFLICT).body(errorMessage);
+    }
+
 }

@@ -32,9 +32,28 @@ public class Post {
 	private String descrption;
 	@Column(name = "content " , nullable = false)
 	private String content;
+	private String apiStatus;
+	private String apiMessage;
 	public Long getId() {
 		return id;
 	}
+
+	public String getApiStatus() {
+		return apiStatus;
+	}
+
+	public void setApiStatus(String apiStatus) {
+		this.apiStatus = apiStatus;
+	}
+
+	public String getApiMessage() {
+		return apiMessage;
+	}
+
+	public void setApiMessage(String apiMessage) {
+		this.apiMessage = apiMessage;
+	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
