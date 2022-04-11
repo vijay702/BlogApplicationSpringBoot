@@ -14,7 +14,7 @@ public interface PostService {
 
 	PostDto createPost(PostDto postDto) throws DataAlreadyExistsException;
 
-	PostResponse getAllPosts(Integer pageNO , Integer pageSize);
+	PostResponse getAllPosts(int pageNO , int pageSize, String sortBy, String sortDir);
 
 	PostDto getPostById(Long id) throws PostNotFoundException;
 

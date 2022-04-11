@@ -1,12 +1,14 @@
 package com.emindsblogapplication.dto;
 
-import lombok.AllArgsConstructor;
-
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
+@Data
+@ToString
 public class PostDto {
 	
 	
@@ -38,5 +40,7 @@ public class PostDto {
 	private String title;
 	private String descrption;
 	private String content;
+	private String apiStatus;
+	private String apiMessage;
 
 }

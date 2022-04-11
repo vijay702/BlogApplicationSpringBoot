@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.emindsblogapplication.dto.PostDto;
@@ -49,25 +50,30 @@ public class PostServiceImplementation implements PostService {
 
 		Long CID = postRepository.getPostByTitle(post.getTitle());
 		if(null !=CID){
-			LOGGER.info("Post already exist "  + post.getTitle());
+			LOGGER.info("Post already exist "  + post);
 			post.setApiStatus("1");
 			post.setApiMessage("post already exist , chhose another title");
 			//post.setId(CID);
 
 			throw new DataAlreadyExistsException("title already exists please select a another title");
 		}
-		//convert entity to dto
+           //saving the entity into the database
 			Post newpost = postRepository.save(post);
+
+		//convert entity to dto
 			PostDto postResponse = mapToDto(newpost);
 			return postResponse;
 
 	}
 
 	@Override
-	public PostResponse getAllPosts(Integer pageNO , Integer pageSize) {
+	public PostResponse getAllPosts(int pageNO , int pageSize,String sortBy,String sortDir) {
+
+		Sort sort = sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()) ? Sort.by(sortBy).ascending()
+				: Sort.by(sortBy).descending();
        //create a pagebable instance
 
-		Pageable pageable = PageRequest.of(pageNO,pageSize);
+		Pageable pageable = PageRequest.of(pageNO,pageSize, sort);
 
 		Page<Post> posts = postRepository.findAll(pageable);
 
@@ -91,17 +97,11 @@ public class PostServiceImplementation implements PostService {
 	
 	@Override
 	public PostDto getPostById(Long id) throws PostNotFoundException {
-		
 		Optional<Post> post = postRepository.findById(id);
-		
 		if(!post.isPresent()) {
-
 			throw  new PostNotFoundException("enter a correct id , there is no post for entered id");
-			
 					}
-	
 		Post newPost = post.get();
-		
 		return mapToDto(newPost);
 	}
 
@@ -109,9 +109,6 @@ public class PostServiceImplementation implements PostService {
 	public PostDto updatePost(PostDto postDto, Long id)  {
 		// get post by id
 		Post post = postRepository.findById(id).get();
-
-
-		
 
 		post.setTitle(postDto.getTitle());
 		post.setDescrption(postDto.getDescrption());

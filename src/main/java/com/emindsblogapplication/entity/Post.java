@@ -1,16 +1,11 @@
 package com.emindsblogapplication.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
+import javax.persistence.*;
 
-import lombok.AllArgsConstructor;
+import lombok.*;
 
-import lombok.NoArgsConstructor;
+import java.util.HashSet;
+import java.util.Set;
 
 
 @AllArgsConstructor
@@ -20,10 +15,14 @@ import lombok.NoArgsConstructor;
 		name = "posts" , uniqueConstraints = {@UniqueConstraint(columnNames = {"title"})}
 		)
 @Entity
+@Getter
+@Setter
+@ToString
 public class Post {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="postId")
 	private Long id;
 	
 	@Column(name = "title " , nullable = false)
@@ -34,46 +33,11 @@ public class Post {
 	private String content;
 	private String apiStatus;
 	private String apiMessage;
-	public Long getId() {
-		return id;
-	}
 
-	public String getApiStatus() {
-		return apiStatus;
-	}
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "postId")
+   private Set<Comment> comments = new HashSet<>();
 
-	public void setApiStatus(String apiStatus) {
-		this.apiStatus = apiStatus;
-	}
 
-	public String getApiMessage() {
-		return apiMessage;
-	}
-
-	public void setApiMessage(String apiMessage) {
-		this.apiMessage = apiMessage;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-	public String getTitle() {
-		return title;
-	}
-	public void setTitle(String title) {
-		this.title = title;
-	}
-	public String getDescrption() {
-		return descrption;
-	}
-	public void setDescrption(String descrption) {
-		this.descrption = descrption;
-	}
-	public String getContent() {
-		return content;
-	}
-	public void setContent(String content) {
-		this.content = content;
-	}
 
 }
