@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "comment" , uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
+@Table(name = "comment" )
 
 public class Comment {
 
