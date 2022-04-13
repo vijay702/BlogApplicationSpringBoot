@@ -2,6 +2,8 @@ package com.emindsblogapplication.dto;
 
 import lombok.*;
 
+import java.util.Set;
+
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -42,5 +44,6 @@ public class PostDto {
 	private String content;
 	private String apiStatus;
 	private String apiMessage;
+	private Set<CommentDto> comments;
 
 }

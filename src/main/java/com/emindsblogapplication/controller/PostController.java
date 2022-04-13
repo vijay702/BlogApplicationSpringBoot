@@ -20,7 +20,8 @@ public class PostController {
 	
 	@Autowired
 	private PostService postService ;
-	
+
+
 	@PostMapping
 	public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto) throws DataAlreadyExistsException {
 		
@@ -28,7 +29,8 @@ public class PostController {
 		
 		return new ResponseEntity<>(postService.createPost(postDto), HttpStatus.CREATED);
 	}
-	
+
+
 	@GetMapping
 	public PostResponse getAllPosts(
 			@RequestParam(value="pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER,required = false) int pageNo,

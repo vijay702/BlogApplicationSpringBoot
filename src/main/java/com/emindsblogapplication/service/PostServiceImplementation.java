@@ -7,6 +7,7 @@ import java.util.stream.Collectors;
 import com.emindsblogapplication.entity.PostResponse;
 import com.emindsblogapplication.exception.DataAlreadyExistsException;
 import com.emindsblogapplication.exception.PostNotFoundException;
+import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,6 @@ import org.springframework.stereotype.Service;
 import com.emindsblogapplication.dto.PostDto;
 import com.emindsblogapplication.entity.Post;
 import com.emindsblogapplication.repository.PostRepository;
-import com.emindsblogapplication.service.PostService;
 
 @Service
 public class PostServiceImplementation implements PostService {
@@ -27,6 +27,9 @@ public class PostServiceImplementation implements PostService {
 
 	@Autowired
 	private PostRepository postRepository;
+
+	@Autowired
+	private ModelMapper mapper;
 
 	private static  final Logger LOGGER = LoggerFactory.getLogger(PostServiceImplementation.class);
 
@@ -61,8 +64,8 @@ public class PostServiceImplementation implements PostService {
 			Post newpost = postRepository.save(post);
 
 		//convert entity to dto
-			PostDto postResponse = mapToDto(newpost);
-			return postResponse;
+
+			return mapToDto(newpost);
 
 	}
 
@@ -120,23 +123,25 @@ public class PostServiceImplementation implements PostService {
 
 	//converting dto to entity
    private Post mapToEntity(PostDto postDto) {
-	
-	 Post post = new Post();
+
+	 Post post = mapper.map(postDto,Post.class);
+
+	 /*Post post = new Post();
 	 post.setTitle(postDto.getTitle());
 	 post.setDescrption(postDto.getDescrption());
-	 post.setContent(postDto.getContent());
+	 post.setContent(postDto.getContent());*/
 	return post;
    }
 	//converting entity to dto
 	
 	private PostDto mapToDto(Post post) {
+		PostDto postDto = mapper.map(post,PostDto.class);
 		
-		
-		PostDto postDto = new PostDto();
+		/*PostDto postDto = new PostDto();
 		postDto.setId(post.getId());
 		postDto.setTitle(post.getTitle());
 		postDto.setDescrption(post.getDescrption());
-		postDto.setContent(post.getContent());
+		postDto.setContent(post.getContent());*/
 		return postDto;
 		
 		
