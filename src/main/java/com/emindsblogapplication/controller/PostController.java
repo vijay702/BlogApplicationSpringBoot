@@ -9,6 +9,7 @@ import com.emindsblogapplication.utils.AppConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import com.emindsblogapplication.dto.PostDto;
@@ -21,7 +22,7 @@ public class PostController {
 	@Autowired
 	private PostService postService ;
 
-
+    @PreAuthorize("hasRole('ADMIN')")
 	@PostMapping
 	public ResponseEntity<PostDto> createPost(@RequestBody PostDto postDto) throws DataAlreadyExistsException {
 		
@@ -47,6 +48,7 @@ public class PostController {
 		
 		return postService.getPostById( id);
 	}
+	@PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
 	public ResponseEntity<PostDto> updatePost(@RequestBody PostDto postDto, @PathVariable (name ="id") Long id )  {
 
@@ -55,6 +57,7 @@ public class PostController {
 		return new ResponseEntity<>(postResponse,HttpStatus.OK);
 
 	}
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping("{id}")
 	public String deletePostById(@PathVariable("id") Long id) throws PostNotFoundException {
 
