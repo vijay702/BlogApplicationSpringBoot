@@ -1,5 +1,7 @@
 package com.emindsblogapplication.dto;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
 import java.util.Set;
@@ -11,6 +13,7 @@ import java.util.Set;
 @Setter
 @Data
 @ToString
+@ApiModel(description = "Post Model Informations")
 public class PostDto {
 	
 	
@@ -38,9 +41,13 @@ public class PostDto {
 	public void setContent(String content) {
 		this.content = content;
 	}
+	@ApiModelProperty(value = "Blog Post Id")
 	private Long id;
+	@ApiModelProperty(value = "Blog Post title")
 	private String title;
+	@ApiModelProperty(value = "Blog Post descrption")
 	private String descrption;
+	@ApiModelProperty(value = "Blog Post content")
 	private String content;
 	private String apiStatus;
 	private String apiMessage;
