@@ -23,3 +23,11 @@ logging:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
+
+
+
+  app:
+    jwt:
+      secret: JWTSecretKey
+
+      jwt-expiration-milliseconds : 604800000
